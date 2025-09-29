@@ -1,7 +1,16 @@
 import { useRouter } from "expo-router";
 import { useState } from "react";
 import { FlatList, KeyboardAvoidingView, Platform, StyleSheet, View } from "react-native";
-import { ActivityIndicator, Appbar, Avatar, Card, Chip, IconButton, Text, TextInput } from "react-native-paper";
+import {
+    ActivityIndicator,
+    Appbar,
+    Avatar,
+    Card,
+    Chip,
+    IconButton,
+    Text,
+    TextInput,
+} from "react-native-paper";
 
 type Message = {
   id: number;
@@ -12,7 +21,11 @@ type Message = {
 export default function AskLibrarianScreen() {
   const router = useRouter();
   const [messages, setMessages] = useState<Message[]>([
-    { id: 0, text: "👋 Hello! I’m your librarian assistant. How can I help you today?", sender: "bot" },
+    {
+      id: 0,
+      text: "👋 Hello! I’m your librarian assistant. How can I help you today?",
+      sender: "bot",
+    },
   ]);
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
@@ -61,7 +74,10 @@ export default function AskLibrarianScreen() {
       {/* App Bar */}
       <Appbar.Header style={styles.appbar}>
         <Appbar.BackAction color="white" onPress={() => router.back()} />
-        <Appbar.Content title="Ask a Librarian" titleStyle={styles.appbarTitle} />
+        <Appbar.Content
+          title="Ask a Librarian"
+          titleStyle={styles.appbarTitle}
+        />
       </Appbar.Header>
 
       {/* Chat Messages */}
@@ -178,7 +194,7 @@ const styles = StyleSheet.create({
 
   // Messages
   messages: { padding: 12 },
-  messageRow: { flexDirection: "row", alignItems: "flex-end", marginVertical: 6 },
+  messageRow: { flexDirection: "row", alignItems: "flex-end", marginVertical: 8 },
   userRow: { justifyContent: "flex-end" },
   botRow: { justifyContent: "flex-start" },
 
@@ -186,15 +202,23 @@ const styles = StyleSheet.create({
   userAvatar: { backgroundColor: "#6200EE", marginLeft: 6 },
   botAvatar: { backgroundColor: "#8E24AA", marginRight: 6 },
 
-  messageCard: { padding: 10, borderRadius: 16, maxWidth: "70%" },
+  messageCard: {
+    padding: 12,
+    borderRadius: 18,
+    maxWidth: "75%",
+    flexShrink: 1, // ✅ makes long messages wrap nicely
+  },
+
+  // Shared text style
+  messageText: { fontSize: 15, lineHeight: 20 },
 
   // User bubble
   userCard: { backgroundColor: "#6200EE" },
-  userText: { fontSize: 15, color: "white" },
+  userText: { color: "white" },
 
   // Bot bubble
   botCard: { backgroundColor: "#E0E0E0" },
-  botText: { fontSize: 15, color: "#212121" },
+  botText: { color: "#212121" },
 
   // Typing Indicator
   typingIndicator: {
