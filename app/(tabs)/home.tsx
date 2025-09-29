@@ -1,20 +1,21 @@
+// HomeScreen.tsx
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
 import { useEffect, useRef } from "react";
 import {
-    Animated,
-    Image,
-    Pressable,
-    ScrollView,
-    StyleSheet,
-    View,
+  Animated,
+  Image,
+  Pressable,
+  ScrollView,
+  StyleSheet,
+  View,
 } from "react-native";
 import { Badge, Card, ProgressBar, Text } from "react-native-paper";
 import {
-    ClubsCard,
-    LeaderboardCard,
-    LibraryCard,
-    SportsCard,
+  ClubsCard,
+  LeaderboardCard,
+  LibraryCard,
+  SportsCard,
 } from "../../components/highlights";
 import QuickActionsRow from "../../components/QuickActionsRow";
 
@@ -41,11 +42,17 @@ export default function HomeScreen() {
       {/* Header */}
       <Animated.View style={[styles.headerBox, { opacity: fadeAnim }]}>
         <View style={styles.headerTopRow}>
-          {/* Profile Avatar */}
-          <Image
-            source={{ uri: "https://via.placeholder.com/60" }}
-            style={styles.avatar}
-          />
+          {/* Profile Avatar (Pressable) */}
+          <Pressable onPress={() => router.push("/profile")}>
+            <View style={styles.avatarWrapper}>
+              <Image
+                source={{
+                  uri: "https://i.pravatar.cc/150?img=12", // ✅ replace with your real image or asset
+                }}
+                style={styles.avatar}
+              />
+            </View>
+          </Pressable>
 
           {/* Notification Bell */}
           <Pressable
@@ -169,13 +176,19 @@ const styles = StyleSheet.create({
     alignItems: "center",
     marginBottom: 12,
   },
+
+  // Avatar with border
+  avatarWrapper: {
+    padding: 2,
+    borderRadius: 30,
+    backgroundColor: "white",
+  },
   avatar: {
     width: 50,
     height: 50,
     borderRadius: 25,
-    borderWidth: 2,
-    borderColor: "white",
   },
+
   bellWrapper: { position: "relative" },
   badge: {
     position: "absolute",
