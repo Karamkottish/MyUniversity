@@ -56,10 +56,30 @@ export default function AssignmentsScreen() {
         value={filter}
         onValueChange={setFilter}
         buttons={[
-          { value: "All", label: "All" },
-          { value: "Pending", label: "Pending" },
-          { value: "Submitted", label: "Submitted" },
-          { value: "Overdue", label: "Overdue" },
+          {
+            value: "All",
+            label: "All",
+            style: { backgroundColor: "#E0E0E0" },
+            labelStyle: { color: "#333", fontWeight: "600" },
+          },
+          {
+            value: "Pending",
+            label: "Pending",
+            style: { backgroundColor: "#42A5F5" },
+            labelStyle: { color: "white", fontWeight: "600" },
+          },
+          {
+            value: "Submitted",
+            label: "Submitted",
+            style: { backgroundColor: "#66BB6A" },
+            labelStyle: { color: "white", fontWeight: "600" },
+          },
+          {
+            value: "Overdue",
+            label: "Overdue",
+            style: { backgroundColor: "#EF5350" },
+            labelStyle: { color: "white", fontWeight: "600" },
+          },
         ]}
         style={styles.filterRow}
       />
