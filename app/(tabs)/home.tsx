@@ -1,5 +1,6 @@
 // HomeScreen.tsx
 import { MaterialCommunityIcons } from "@expo/vector-icons";
+import { useNavigation } from "@react-navigation/native";
 import { useRouter } from "expo-router";
 import { useEffect, useRef } from "react";
 import {
@@ -21,6 +22,7 @@ import QuickActionsRow from "../../components/QuickActionsRow";
 
 export default function HomeScreen() {
   const router = useRouter();
+  const navigation = useNavigation<any>(); // ✅ access drawer navigation
   const fadeAnim = useRef(new Animated.Value(0)).current;
 
   useEffect(() => {
@@ -42,12 +44,17 @@ export default function HomeScreen() {
       {/* Header */}
       <Animated.View style={[styles.headerBox, { opacity: fadeAnim }]}>
         <View style={styles.headerTopRow}>
-          {/* Profile Avatar (Pressable) */}
+          {/* Hamburger menu */}
+          <Pressable onPress={() => navigation.openDrawer()}>
+            <MaterialCommunityIcons name="menu" size={28} color="white" />
+          </Pressable>
+
+          {/* Profile Avatar */}
           <Pressable onPress={() => router.push("/profile")}>
             <View style={styles.avatarWrapper}>
               <Image
                 source={{
-                  uri: "https://i.pravatar.cc/150?img=12", // ✅ replace with your real image or asset
+                  uri: "https://i.pravatar.cc/150?img=12", // replace with real user avatar
                 }}
                 style={styles.avatar}
               />
@@ -59,11 +66,7 @@ export default function HomeScreen() {
             style={styles.bellWrapper}
             onPress={() => router.push("/notifications")}
           >
-            <MaterialCommunityIcons
-              name="bell-outline"
-              size={28}
-              color="white"
-            />
+            <MaterialCommunityIcons name="bell-outline" size={28} color="white" />
             <Badge style={styles.badge}>3</Badge>
           </Pressable>
         </View>
@@ -80,25 +83,13 @@ export default function HomeScreen() {
       <Card style={styles.progressCard}>
         <Card.Content>
           <Text style={styles.progressLabel}>Attendance 85%</Text>
-          <ProgressBar
-            progress={0.85}
-            color="#42A5F5"
-            style={styles.progressBar}
-          />
+          <ProgressBar progress={0.85} color="#42A5F5" style={styles.progressBar} />
 
           <Text style={styles.progressLabel}>Assignments Completed 60%</Text>
-          <ProgressBar
-            progress={0.6}
-            color="#66BB6A"
-            style={styles.progressBar}
-          />
+          <ProgressBar progress={0.6} color="#66BB6A" style={styles.progressBar} />
 
           <Text style={styles.progressLabel}>GPA Trend 3.4 / 4.0</Text>
-          <ProgressBar
-            progress={0.85}
-            color="#AB47BC"
-            style={styles.progressBar}
-          />
+          <ProgressBar progress={0.85} color="#AB47BC" style={styles.progressBar} />
         </Card.Content>
       </Card>
 
@@ -106,11 +97,7 @@ export default function HomeScreen() {
       <Text variant="headlineMedium" style={styles.sectionTitle}>
         🌟 Campus Highlights
       </Text>
-      <ScrollView
-        horizontal
-        showsHorizontalScrollIndicator={false}
-        style={styles.highlightsRow}
-      >
+      <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.highlightsRow}>
         <LeaderboardCard />
         <ClubsCard />
         <SportsCard />
@@ -152,8 +139,7 @@ export default function HomeScreen() {
       <View style={[styles.announcementCard, { backgroundColor: "#E3F2FD" }]}>
         <Text style={styles.announcementTitle}>📚 New Library E-Resources</Text>
         <Text style={styles.announcementText}>
-          Explore 500+ new digital textbooks available now in the Library
-          section of the app.
+          Explore 500+ new digital textbooks available now in the Library section of the app.
         </Text>
       </View>
     </ScrollView>
@@ -176,19 +162,12 @@ const styles = StyleSheet.create({
     alignItems: "center",
     marginBottom: 12,
   },
-
-  // Avatar with border
   avatarWrapper: {
     padding: 2,
     borderRadius: 30,
     backgroundColor: "white",
   },
-  avatar: {
-    width: 50,
-    height: 50,
-    borderRadius: 25,
-  },
-
+  avatar: { width: 50, height: 50, borderRadius: 25 },
   bellWrapper: { position: "relative" },
   badge: {
     position: "absolute",
@@ -197,17 +176,8 @@ const styles = StyleSheet.create({
     backgroundColor: "#FF5252",
     color: "white",
   },
-  greeting: {
-    fontSize: 22,
-    fontWeight: "bold",
-    color: "white",
-  },
-  subGreeting: {
-    fontSize: 16,
-    color: "white",
-    opacity: 0.9,
-    marginTop: 4,
-  },
+  greeting: { fontSize: 22, fontWeight: "bold", color: "white" },
+  subGreeting: { fontSize: 16, color: "white", opacity: 0.9, marginTop: 4 },
 
   // Progress
   progressCard: {
@@ -222,16 +192,9 @@ const styles = StyleSheet.create({
     marginTop: 10,
     marginBottom: 4,
   },
-  progressBar: {
-    height: 10,
-    borderRadius: 5,
-  },
+  progressBar: { height: 10, borderRadius: 5 },
 
-  sectionTitle: {
-    fontWeight: "bold",
-    marginBottom: 12,
-    color: "#1D1B20",
-  },
+  sectionTitle: { fontWeight: "bold", marginBottom: 12, color: "#1D1B20" },
 
   highlightsRow: { marginBottom: 24 },
 

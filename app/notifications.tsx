@@ -49,11 +49,11 @@ export default function NotificationsScreen() {
   const getColor = (type: Notification["type"]) => {
     switch (type) {
       case "announcement":
-        return "#42A5F5";
+        return "#42A5F5"; // blue
       case "assignment":
-        return "#66BB6A";
+        return "#66BB6A"; // green
       case "payment":
-        return "#EF5350";
+        return "#EF5350"; // red
       default:
         return "#9E9E9E";
     }
@@ -102,13 +102,26 @@ export default function NotificationsScreen() {
           <Card
             style={[
               styles.card,
-              isRead && { opacity: 0.5 }, // fade if all marked read
+              isRead && { opacity: 0.5 }, // fade if marked read
             ]}
+            mode="elevated"
           >
             <Card.Content style={styles.cardContent}>
-              <View style={[styles.iconWrapper, { backgroundColor: getColor(n.type) }]}>
-                <MaterialCommunityIcons name={getIcon(n.type)} size={24} color="white" />
+              {/* Icon Circle */}
+              <View
+                style={[
+                  styles.iconWrapper,
+                  { backgroundColor: getColor(n.type) },
+                ]}
+              >
+                <MaterialCommunityIcons
+                  name={getIcon(n.type)}
+                  size={24}
+                  color="white"
+                />
               </View>
+
+              {/* Text + Chip */}
               <View style={styles.textWrapper}>
                 <Text variant="titleMedium" style={styles.title}>
                   {n.title}
@@ -131,6 +144,8 @@ export default function NotificationsScreen() {
 
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: "#F8F9FA", padding: 16 },
+
+  // Header
   headerRow: {
     flexDirection: "row",
     justifyContent: "space-between",
@@ -143,13 +158,17 @@ const styles = StyleSheet.create({
     color: "#42A5F5",
     fontWeight: "600",
   },
+
+  // Cards
   card: {
     marginBottom: 12,
     borderRadius: 16,
     backgroundColor: "white",
-    elevation: 2,
+    elevation: 3,
   },
   cardContent: { flexDirection: "row", alignItems: "center" },
+
+  // Icon Circle
   iconWrapper: {
     width: 50,
     height: 50,
@@ -158,8 +177,9 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     marginRight: 12,
   },
+
   textWrapper: { flex: 1 },
-  title: { fontWeight: "bold", marginBottom: 4 },
+  title: { fontWeight: "bold", marginBottom: 4, color: "#1D1B20" },
   message: { fontSize: 14, color: "#555", marginBottom: 8 },
   chip: { alignSelf: "flex-start", borderRadius: 8 },
 

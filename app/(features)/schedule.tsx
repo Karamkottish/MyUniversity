@@ -1,106 +1,100 @@
-import { LinearGradient } from "expo-linear-gradient";
-import { ScrollView, StyleSheet, View, useWindowDimensions } from "react-native";
-import { Text } from "react-native-paper";
-
-type ClassItem = {
-  day: string;
-  subject: string;
-  time: string;
-  room: string;
-  colors: [string, string];
-};
+import { useRouter } from "expo-router";
+import { ScrollView, StyleSheet, View } from "react-native";
+import { Appbar, Card, Text } from "react-native-paper";
 
 export default function ScheduleScreen() {
-  const { width, height } = useWindowDimensions();
-  const isLandscape = width > height; // detect orientation
+  const router = useRouter();
 
-  const classes: ClassItem[] = [
-    { day: "Monday", subject: "Mobile App Development", time: "10:00 AM - 11:30 AM", room: "Room 201", colors: ["#42A5F5", "#1E88E5"] },
-    { day: "Monday", subject: "Database Systems", time: "12:00 PM - 1:30 PM", room: "Room 105", colors: ["#66BB6A", "#2E7D32"] },
-    { day: "Tuesday", subject: "Operating Systems", time: "09:00 AM - 10:30 AM", room: "Room 110", colors: ["#FF7043", "#E64A19"] },
-    { day: "Tuesday", subject: "Computer Networks", time: "11:00 AM - 12:30 PM", room: "Room 210", colors: ["#29B6F6", "#0288D1"] },
-    { day: "Wednesday", subject: "Software Engineering", time: "10:00 AM - 11:30 AM", room: "Room 305", colors: ["#AB47BC", "#6A1B9A"] },
-    { day: "Thursday", subject: "Artificial Intelligence", time: "09:00 AM - 10:30 AM", room: "Room 220", colors: ["#EC407A", "#AD1457"] },
-    { day: "Thursday", subject: "Web Development", time: "11:00 AM - 12:30 PM", room: "Room 115", colors: ["#FFA726", "#FB8C00"] },
+  // 📚 Fall 2024 – 2025 Timetable (IT – Software Specialization)
+  const timetable = [
+    {
+      day: "Sunday",
+      classes: [
+        { course: "Mobile App Development", time: "10:00 AM – 11:30 AM", room: "Room 204" },
+        { course: "Database Systems", time: "1:00 PM – 2:30 PM", room: "Lab 3" },
+      ],
+    },
+    {
+      day: "Monday",
+      classes: [
+        { course: "Artificial Intelligence Fundamentals", time: "9:00 AM – 10:30 AM", room: "Room 305" },
+        { course: "Operating Systems", time: "12:00 PM – 1:30 PM", room: "Room 210" },
+      ],
+    },
+    {
+      day: "Tuesday",
+      classes: [
+        { course: "Software Engineering", time: "11:00 AM – 12:30 PM", room: "Room 101" },
+        { course: "Computer Networks", time: "2:00 PM – 3:30 PM", room: "Room 312" },
+      ],
+    },
+    {
+      day: "Wednesday",
+      classes: [
+        { course: "Compiler Design", time: "9:30 AM – 11:00 AM", room: "Room 206" },
+        { course: "Cloud Computing", time: "1:00 PM – 2:30 PM", room: "Room 220" },
+      ],
+    },
+    {
+      day: "Thursday",
+      classes: [
+        { course: "Machine Learning", time: "10:00 AM – 11:30 AM", room: "Room 108" },
+        { course: "Capstone Project", time: "1:00 PM – 3:00 PM", room: "Innovation Lab" },
+      ],
+    },
   ];
 
-  // Group by day
-  const grouped = classes.reduce<Record<string, ClassItem[]>>((acc, cls) => {
-    if (!acc[cls.day]) acc[cls.day] = [];
-    acc[cls.day].push(cls);
-    return acc;
-  }, {});
-
   return (
-    <ScrollView style={styles.container}>
-      <Text variant="headlineMedium" style={styles.header}>
-        📅 Semester Schedule
-      </Text>
-      <Text style={styles.subtitle}>
-        Information Technology - Software Specialization
-      </Text>
+    <View style={styles.container}>
+      {/* Appbar */}
+      <Appbar.Header style={styles.appbar}>
+        <Appbar.BackAction color="white" onPress={() => router.back()} />
+        <Appbar.Content title="📅 Weekly Schedule" titleStyle={styles.appbarTitle} />
+      </Appbar.Header>
 
-      {Object.keys(grouped).map((day) => (
-        <View key={day} style={styles.daySection}>
-          <Text style={styles.dayTitle}>{day}</Text>
-          <View style={[styles.cardRow, isLandscape && { flexDirection: "row", flexWrap: "wrap" }]}>
-            {grouped[day].map((cls, idx) => (
-              <LinearGradient
-                key={idx}
-                colors={cls.colors}
-                style={[styles.card, isLandscape && styles.landscapeCard]}
-                start={{ x: 0, y: 0 }}
-                end={{ x: 1, y: 1 }}
-              >
-                <Text style={styles.subject}>{cls.subject}</Text>
-                <Text style={styles.details}>{cls.time}</Text>
-                <Text style={styles.room}>{cls.room}</Text>
-              </LinearGradient>
-            ))}
-          </View>
-        </View>
-      ))}
-    </ScrollView>
+      {/* Timetable */}
+      <ScrollView contentContainerStyle={{ padding: 16 }}>
+        {timetable.map((day, index) => (
+          <Card key={index} style={styles.dayCard} mode="elevated">
+            <Card.Title
+              title={day.day}
+              titleStyle={styles.dayTitle}
+              left={(props) => (
+                <Text {...props} style={styles.dayEmoji}>
+                  📘
+                </Text>
+              )}
+            />
+            <Card.Content>
+              {day.classes.map((c, idx) => (
+                <View key={idx} style={styles.classBox}>
+                  <Text style={styles.course}>{c.course}</Text>
+                  <Text style={styles.details}>{c.time}</Text>
+                  <Text style={styles.details}>{c.room}</Text>
+                </View>
+              ))}
+            </Card.Content>
+          </Card>
+        ))}
+      </ScrollView>
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: "#F8F9FA", padding: 16 },
-  header: {
-    textAlign: "center",
-    marginBottom: 8,
-    fontWeight: "bold",
-    color: "#1D1B20",
-  },
-  subtitle: {
-    textAlign: "center",
-    marginBottom: 20,
-    fontSize: 16,
-    color: "#555",
-  },
-  daySection: { marginBottom: 24 },
-  dayTitle: {
-    fontSize: 20,
-    fontWeight: "700",
-    color: "#333",
-    marginBottom: 12,
-  },
-  cardRow: { flexDirection: "column" },
-  card: {
-    borderRadius: 16,
-    padding: 16,
-    marginBottom: 12,
-    elevation: 4,
-    shadowColor: "#000",
-    shadowOpacity: 0.2,
-    shadowOffset: { width: 0, height: 4 },
-    shadowRadius: 5,
-  },
-  landscapeCard: {
-    width: "48%", // two cards per row in landscape
-    marginRight: "4%",
-  },
-  subject: { fontSize: 18, fontWeight: "700", color: "white", marginBottom: 6 },
-  details: { fontSize: 14, color: "white", marginBottom: 2 },
-  room: { fontSize: 13, color: "white", opacity: 0.9 },
+  container: { flex: 1, backgroundColor: "#F9FAFB" },
+
+  // Appbar
+  appbar: { backgroundColor: "#6200EE", elevation: 0 },
+  appbarTitle: { color: "white", fontWeight: "bold", fontSize: 20 },
+
+  // Day Card
+  dayCard: { marginBottom: 16, borderRadius: 18, backgroundColor: "white", elevation: 3 },
+  dayTitle: { fontWeight: "bold", fontSize: 18, color: "#1D1B20" },
+  dayEmoji: { fontSize: 22, marginRight: 12 },
+
+  // Class Info
+  classBox: { marginBottom: 12, paddingLeft: 8, borderLeftWidth: 3, borderLeftColor: "#6200EE" },
+  course: { fontSize: 16, fontWeight: "600", color: "#212121" },
+  details: { fontSize: 14, color: "#555" },
 });
